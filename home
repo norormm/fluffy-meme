@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛茸茸迷因研究所 | Fluffy Meme Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            --bg-color: #FFF9F0; /* Creamy background */
+            --card-bg: #FFFFFF;
+            --primary-color: #FF8A65; /* Soft Orange */
+            --secondary-color: #8D6E63; /* Warm Brown */
+            --accent-color: #FFD54F; /* Yellow */
+            --text-main: #4E342E;
+            --text-light: #887672;
+            --border-radius: 20px;
+            --shadow-sm: 0 4px 6px rgba(78, 52, 46, 0.05);
+            --shadow-hover: 0 10px 15px rgba(78, 52, 46, 0.1);
+            --font-title: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Noto Sans TC', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-title);
+            font-weight: 600;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-body);
+            transition: all 0.3s ease;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 80vh; /* Make hero take up more space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Floating Tags Decoration */
+        .floating-tags {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .tag-deco {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            transform: rotate(-5deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(0deg); }
+            100% { transform: translateY(0) rotate(-5deg); }
+        }
+
+        /* --- Random Meme Section --- */
+        #random-meme-section {
+            display: none;
+            background: #fff0e0;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 20px auto 60px;
+            max-width: 800px;
+            box-shadow: var(--shadow-hover);
+            animation: slideDown 0.5s ease-out;
+            text-align: center;
+            border: 4px dashed var(--primary-color);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .random-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .random-badge {
+            background: var(--accent-color);
+            color: var(--text-main);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .random-img-container {
+            max-width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .random-img-container img {
+            max-width: 100%;
+            max-height: 450px;
+            object-fit: contain;
+            display: block;
+            background: #eee;
+        }
+
+        /* --- Filter Bar --- */
+        .filter-bar-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .filter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-top-row {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-right: 40px;
+            border: 2px solid #eee;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .type-toggle {
+            display: flex;
+            background: #eee;
+            border-radius: 30px;
+            padding: 4px;
+        }
+
+        .toggle-btn {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            background: transparent;
+            color: var(--text-light);
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        .categories-row {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            width: 100%;
+            padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .categories-row::-webkit-scrollbar {
+            height: 0px;
+            background: transparent;
+        }
+
+        .cat-chip {
+            white-space: nowrap;
+            padding: 8px 20px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        .cat-chip:hover {
+            background: #f0e8e6;
+        }
+
+        .cat-chip.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        /* --- Meme Gallery Grid --- */
+        .gallery {
+            padding: 40px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            min-height: 500px;
+        }
+
+        /* --- Meme Card --- */
+        .meme-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .meme-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-img-box {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .meme-card:hover .card-img-box img {
+            transform: scale(1.1);
+        }
+
+        .type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .category-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            background: #f4ebe9;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+        }
+
+        .action-btn {
+            background: none;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+            background: #fff5f2;
+        }
+
+        .heart-btn.liked {
+            color: #ff5252;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            color: var(--text-light);
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+
+        /* --- Floating Home Button --- */
+        .home-floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            
+            /* Semi-transparent style */
+            background-color: rgba(141, 110, 99, 0.7); /* Secondary color with opacity */
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            font-size: 1.5rem;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Initial State: Hidden */
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+        
+        /* Visible State */
+        .home-floating-btn.show {
+            opacity: 0.8; /* Visible but semi-transparent */
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        
+        /* Hover State */
+        .home-floating-btn:hover {
+            opacity: 1; /* Fully opaque on hover */
+            background-color: rgba(141, 110, 99, 1);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-main);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1100;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* --- Responsive --- */
+        @media (min-width: 768px) {
+            .filter-controls {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .filter-top-row {
+                width: auto;
+                flex: 1;
+            }
+            .categories-row {
+                width: auto;
+            }
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <header id="hero" class="hero">
+        <div class="floating-tags">
+            <span class="tag-deco" style="top: 20%; left: 10%;">#九九成稀罕物</span>
+            <span class="tag-deco" style="top: 15%; right: 15%;">#貓貓表情包</span>
+            <span class="tag-deco" style="top: 60%; left: 5%;">#厭世貓</span>
+            <span class="tag-deco" style="top: 50%; right: 8%;">#ㄎㄧㄤ貓</span>
+        </div>
+
+        <h1>毛茸茸迷因研究所</h1>
+        <p>收藏宇宙中最稀有、最ㄎㄧㄤ的貓貓迷因。<br>A fluffy archive of the internet’s rarest and derpiest cat memes.</p>
+        
+        <div class="hero-btns">
+            <button class="btn-primary" onclick="scrollToGallery()">開始逛迷因</button>
+            <button class="btn-secondary" id="btn-random">抽一隻今天的命定貓</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Random Meme Panel (Injected via JS) -->
+        <section id="random-meme-section"></section>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar-container" id="gallery-anchor">
+            <div class="filter-controls">
+                <!-- Categories -->
+                <div class="categories-row" id="category-container">
+                    <!-- Chips injected via JS -->
+                </div>
+
+                <div class="filter-top-row">
+                    <!-- Type Toggle -->
+                    <div class="type-toggle">
+                        <button class="toggle-btn active" data-type="all">全部</button>
+                        <button class="toggle-btn" data-type="photo">只有照片</button>
+                        <button class="toggle-btn" data-type="gif">只有 GIF</button>
+                    </div>
+                    <!-- Search -->
+                    <div class="search-wrapper">
+                        <input type="text" id="search-input" placeholder="輸入關鍵字找貓貓迷因…">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <main class="gallery" id="meme-gallery">
+            <!-- Cards injected via JS -->
+        </main>
+    </div>
+
+    <!-- Floating Home Button -->
+    <!-- Arrow symbol used: ↑ -->
+    <button id="home-floating-btn" class="home-floating-btn" title="Back to Home">
+        ↑
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <p>「本網站僅供療癒與哈哈大笑使用。」</p>
+        <p style="font-size: 0.85rem;">Made with love for fluffy cat memes.</p>
+        <div class="footer-links">
+            <span>投稿貓貓迷因</span> | <span>關於毛茸茸研究所</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">已複製文案！</div>
+
+    <script>
+        // --- Data (30 Items) ---
+        const memeData = [
+            // --- 貓貓表情包 (Reaction) ---
+            {
+                id: 1,
+                title: "今天我只想當一團毛",
+                caption: "拒絕社交，拒絕移動，只想融化在地毯上。Me everyday.",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80",
+                tags: ["#社交疲勞", "#厭世", "#液體貓"]
+            },
+            {
+                id: 2,
+                title: "偷吃被抓包",
+                caption: "「我沒有，你看錯了，嘴邊那個不是肉泥。」Target spotted.",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=500&q=80",
+                tags: ["#貪吃", "#驚恐", "#現行犯"]
+            },
+            {
+                id: 3,
+                title: "鍵盤毀滅者",
+                caption: "你的工作重要，還是我重要？Choose wisely.",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+                tags: ["#在家工作", "#搗亂", "#霸道"]
+            },
+            {
+                id: 4,
+                title: "這什麼鬼東西",
+                caption: "當你看到下個月的信用卡帳單時。Utter shock.",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1506755855567-6102533867be?w=500&q=80",
+                tags: ["#震驚", "#嚇到", "#表情管理"]
+            },
+            {
+                id: 5,
+                title: "不屑的眼神",
+                caption: "你就這點本事？愚蠢的人類。Judging you hard.",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=500&q=80",
+                tags: ["#鄙視", "#高冷", "#主子"]
+            },
+            {
+                id: 6,
+                title: "驚恐萬分",
+                caption: "有人按門鈴！！！Stranger danger!",
+                category: "reaction",
+                categoryDisplay: "貓貓表情包",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWwyb25xcGZ5ZmZ6b2J6b2J6b2J6b2J6b2J6b2J6b2J6b2J6b2J6bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7aD2saalBwwftBIY/giphy.gif",
+                tags: ["#害怕", "#社交恐懼", "#躲起來"]
+            },
+
+            // --- 九九成稀罕物 (Rare) ---
+            {
+                id: 7,
+                title: "來自宇宙的凝視",
+                caption: "這個角度不是每隻貓都能駕馭的。Super rare angle.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=500&q=80",
+                tags: ["#大頭貓", "#迷之角度", "#可愛"]
+            },
+            {
+                id: 8,
+                title: "異色瞳的奇蹟",
+                caption: "一隻眼睛看穿你的過去，一隻看穿你的未來。David Bowie cat.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&q=80",
+                tags: ["#異色瞳", "#美貓", "#稀有"]
+            },
+            {
+                id: 9,
+                title: "完美的吐司條",
+                caption: "手腳完全收納，空氣動力學滿分。Perfect loaf.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80",
+                tags: ["#母雞蹲", "#麵包", "#收納"]
+            },
+            {
+                id: 10,
+                title: "站起來了！",
+                caption: "貓咪進化論：他們正在學習雙足行走。Evolution.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1561948955-570b270e7c36?w=500&q=80",
+                tags: ["#站立貓", "#狐蒙", "#進化"]
+            },
+            {
+                id: 11,
+                title: "飛天貓貓",
+                caption: "重力對我來說只是個建議。Gravity is optional.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1501820488136-72669149e0d4?w=500&q=80",
+                tags: ["#跳躍", "#動感", "#飛翔"]
+            },
+            {
+                id: 12,
+                title: "貓咪疊羅漢",
+                caption: "冬天就是要擠在一起取暖。Cuddle pile.",
+                category: "rare",
+                categoryDisplay: "九九成稀罕物",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1529778873920-4da4926a7071?w=500&q=80",
+                tags: ["#多貓家庭", "#溫馨", "#疊疊樂"]
+            },
+
+            // --- ㄎㄧㄤ貓 (Kian / Derpy) ---
+            {
+                id: 13,
+                title: "高速運轉的貓腦",
+                caption: "當你試圖理解老闆的需求時。Processing...",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTFqbHhjN3czMm5yNXRodDVzNXJobzVzNXJobzVzNXJobzVzNXJobyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BzyTuYCmvIOR2/giphy.gif",
+                tags: ["#混亂", "#迷惘", "#計算中"]
+            },
+            {
+                id: 14,
+                title: "完全放鬆模式",
+                caption: "骨頭？什麼是骨頭？I am liquid.",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&q=80",
+                tags: ["#液體", "#睡覺", "#軟爛"]
+            },
+            {
+                id: 15,
+                title: "舌頭忘記收",
+                caption: "系統暫時無法縮回舌頭。Blep error.",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1513245543132-31f507417b26?w=500&q=80",
+                tags: ["#Blep", "#吐舌", "#當機"]
+            },
+            {
+                id: 16,
+                title: "卡住了...",
+                caption: "我沒事，我只是在檢查這個百葉窗的品質。I meant to do that.",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1494256997604-0e170c85a071?w=500&q=80",
+                tags: ["#笨蛋", "#卡住", "#救命"]
+            },
+            {
+                id: 17,
+                title: "瘋狂追尾巴",
+                caption: "這個尾巴為什麼一直跟著我！Get it off!",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+                tags: ["#旋轉", "#暈", "#忙碌"]
+            },
+            {
+                id: 18,
+                title: "睡到翻白眼",
+                caption: "這才是深層睡眠的最高境界。Deep sleep.",
+                category: "kian",
+                categoryDisplay: "ㄎㄧㄤ貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&q=80",
+                tags: ["#醜照", "#睡死", "#毫無防備"]
+            },
+
+            // --- 厭世貓 (Depressed / Cursed) ---
+            {
+                id: 19,
+                title: "週一早晨的眼神",
+                caption: "靈魂已經離線，只剩軀殼在打卡。Monday blues.",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1501820488136-72669149e0d4?w=500&q=80",
+                tags: ["#社畜", "#週一", "#眼神死"]
+            },
+            {
+                id: 20,
+                title: "我為什麼在這裡",
+                caption: "對於貓生的終極哲學思考（其實只是餓了）。Existential crisis.",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=500&q=80",
+                tags: ["#懷疑人生", "#憂鬱", "#放空"]
+            },
+            {
+                id: 21,
+                title: "雨天的憂傷",
+                caption: "不能出去玩，整個世界都變成了灰色。Sad vibes.",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=500&q=80",
+                tags: ["#下雨", "#無聊", "#想出去"]
+            },
+            {
+                id: 22,
+                title: "被迫營業",
+                caption: "為了罐罐，我忍。Doing this for food.",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1511044568932-33843255b42e?w=500&q=80",
+                tags: ["#不爽", "#變裝", "#無奈"]
+            },
+            {
+                id: 23,
+                title: "黑暗中的凝視",
+                caption: "當你在半夜醒來發現有東西在看你。Cursed image.",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=500&q=80",
+                tags: ["#恐怖", "#發光眼", "#詛咒"]
+            },
+            {
+                id: 24,
+                title: "又加班？",
+                caption: "看著你還沒回家的鏟屎官，感到絕望。Overtime again?",
+                category: "depressed",
+                categoryDisplay: "厭世貓",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif",
+                tags: ["#累", "#想睡", "#無言"]
+            },
+
+            // --- 暖心貓 (Wholesome) ---
+            {
+                id: 25,
+                title: "暖心抱抱",
+                caption: "需要充電嗎？這裡有一個毛茸茸的擁抱。Sending hugs.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
+                tags: ["#療癒", "#抱抱", "#愛"]
+            },
+            {
+                id: 26,
+                title: "紙箱裡的哲學家",
+                caption: "如果我能在紙箱裡，為什麼要去外面？So cozy.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1519052537078-e6302a4968ef?w=500&q=80",
+                tags: ["#紙箱控", "#安靜", "#哲學"]
+            },
+            {
+                id: 27,
+                title: "最好的朋友",
+                caption: "不管是狗還是貓，我們都是一家人。Besties.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1529429612779-c8e40df2f5ce?w=500&q=80",
+                tags: ["#跨物種", "#友誼", "#溫馨"]
+            },
+            {
+                id: 28,
+                title: "早安之吻",
+                caption: "用磨蹭叫你起床，是世界上最幸福的事。Morning love.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80",
+                tags: ["#早安", "#撒嬌", "#甜蜜"]
+            },
+            {
+                id: 29,
+                title: "小小探險家",
+                caption: "這隻小貓第一次看到花朵的瞬間。Pure joy.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "photo",
+                imageUrl: "https://images.unsplash.com/photo-1503315081792-64d28e3a7688?w=500&q=80",
+                tags: ["#幼貓", "#好奇", "#純真"]
+            },
+            {
+                id: 30,
+                title: "擊掌！",
+                caption: "做得好，你今天活下來了！High five.",
+                category: "wholesome",
+                categoryDisplay: "暖心貓",
+                type: "gif",
+                imageUrl: "https://media.giphy.com/media/pHb82iyFTEGv8sI5hU/giphy.gif",
+                tags: ["#鼓勵", "#正能量", "#擊掌"]
+            }
+        ];
+
+        // --- State ---
+        let currentCategory = 'all';
+        let currentType = 'all';
+        let searchQuery = '';
+
+        // --- Elements ---
+        const galleryEl = document.getElementById('meme-gallery');
+        const categoryContainer = document.getElementById('category-container');
+        const searchInput = document.getElementById('search-input');
+        const typeButtons = document.querySelectorAll('.toggle-btn');
+        const randomBtn = document.getElementById('btn-random');
+        const randomSection = document.getElementById('random-meme-section');
+        const homeFloatingBtn = document.getElementById('home-floating-btn');
+
+        // --- Initialization ---
+        function init() {
+            renderCategories();
+            renderGallery();
+            setupEventListeners();
+        }
+
+        // --- Render Categories ---
+        function renderCategories() {
+            const categories = [
+                { id: 'all', label: '全部' },
+                { id: 'rare', label: '九九成稀罕物' },
+                { id: 'reaction', label: '貓貓表情包' },
+                { id: 'depressed', label: '厭世貓' },
+                { id: 'wholesome', label: '暖心貓' },
+                { id: 'kian', label: 'ㄎㄧㄤ貓' }
+            ];
+
+            categoryContainer.innerHTML = categories.map(cat => `
+                <button class="cat-chip ${cat.id === 'all' ? 'active' : ''}" 
+                        data-id="${cat.id}"
+                        onclick="setCategory('${cat.id}')">
+                    ${cat.label}
+                </button>
+            `).join('');
+        }
+
+        // --- Filtering Logic ---
+        function getFilteredMemes() {
+            return memeData.filter(meme => {
+                // 1. Category Filter
+                const catMatch = currentCategory === 'all' || meme.category === currentCategory;
+
+                // 2. Type Filter
+                const typeMatch = currentType === 'all' || meme.type === currentType;
+
+                // 3. Search Filter
+                const searchLower = searchQuery.toLowerCase();
+                const searchMatch = meme.title.toLowerCase().includes(searchLower) || 
+                                    meme.caption.toLowerCase().includes(searchLower) ||
+                                    meme.tags.some(tag => tag.toLowerCase().includes(searchLower));
+
+                return catMatch && typeMatch && searchMatch;
+            });
+        }
+
+        // --- Render Gallery ---
+        function renderGallery() {
+            const memes = getFilteredMemes();
+            galleryEl.innerHTML = '';
+
+            if (memes.length === 0) {
+                galleryEl.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">
+                    <h3>找不到貓貓... 😿</h3>
+                    <p>換個關鍵字試試看？</p>
+                </div>`;
+                return;
+            }
+
+            memes.forEach(meme => {
+                const card = document.createElement('div');
+                card.className = 'meme-card';
+                card.innerHTML = `
+                    <div class="card-img-box">
+                        <img src="${meme.imageUrl}" alt="${meme.title}" loading="lazy">
+                        <span class="category-label">${meme.categoryDisplay}</span>
+                        ${meme.type === 'gif' ? '<span class="type-badge">GIF</span>' : ''}
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${meme.title}</h3>
+                        <p class="card-desc">${meme.caption}</p>
+                        <div class="card-tags">
+                            ${meme.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn heart-btn" onclick="toggleLike(this)">
+                                ❤
+                            </button>
+                            <button class="action-btn" onclick="copyCaption('${meme.title} - ${meme.caption}')">
+                                📋
+                            </button>
+                            <button class="action-btn" title="Share">
+                                ↗
+                            </button>
+                        </div>
+                    </div>
+                `;
+                galleryEl.appendChild(card);
+            });
+        }
+
+        // --- Feature Functions ---
+        window.setCategory = (id) => {
+            currentCategory = id;
+            
+            // Update Visuals
+            const chips = document.querySelectorAll('.cat-chip');
+            chips.forEach(chip => {
+                if (chip.dataset.id === id) {
+                    chip.classList.add('active');
+                } else {
+                    chip.classList.remove('active');
+                }
+            });
+            
+            renderGallery();
+        };
+
+        function setupEventListeners() {
+            // Type Toggle
+            typeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    typeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentType = btn.dataset.type;
+                    renderGallery();
+                });
+            });
+
+            // Search
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderGallery();
+            });
+
+            // Random Meme
+            randomBtn.addEventListener('click', showRandomMeme);
+
+            // Scroll Listener for Floating Button
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    homeFloatingBtn.classList.add('show');
+                } else {
+                    homeFloatingBtn.classList.remove('show');
+                }
+            });
+
+            // Back to Top Click
+            homeFloatingBtn.addEventListener('click', scrollToHero);
+        }
+
+        // Random Meme Logic
+        function showRandomMeme() {
+            const randomIndex = Math.floor(Math.random() * memeData.length);
+            const meme = memeData[randomIndex];
+
+            randomSection.style.display = 'block';
+            randomSection.innerHTML = `
+                <div class="random-content">
+                    <div style="text-align:center;">
+                        <span class="random-badge">✨ 今天的命定貓 ✨</span>
+                        <h2 style="margin-top:10px; font-size: 2rem;">${meme.title}</h2>
+                    </div>
+                    <div class="random-img-container">
+                        <img src="${meme.imageUrl}" alt="${meme.title}">
+                    </div>
+                    <p style="font-size: 1.2rem; color: var(--text-light);">${meme.caption}</p>
+                    <button class="btn-secondary" onclick="showRandomMeme()">再抽一隻！ 🎲</button>
+                </div>
+            `;
+            
+            // Scroll to it
+            randomSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // UI Helpers
+        window.scrollToGallery = () => {
+            document.getElementById('gallery-anchor').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.scrollToHero = () => {
+            document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.toggleLike = (btn) => {
+            btn.classList.toggle('liked');
+        };
+
+        window.copyCaption = (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        };
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>
